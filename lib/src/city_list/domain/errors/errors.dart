@@ -1,6 +1,6 @@
 class Failure implements Exception {}
 
-class InvalidLatLon extends Failure {}
+class InvalidCityName extends Failure {}
 
 
 class ErrorSearch extends Failure {}
