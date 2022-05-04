@@ -1,6 +1,6 @@
 # Ride the Weahter
 
-Project developed to a test of skill check to the company Cloudwalk
+This project was developed to a selective process of Cloudwalk company, with the porpose of skill check.
 
 ## Getting Started
 
