@@ -18,7 +18,7 @@ main() {
   LatLon invalidLatLon = LatLon(latitude: "", longitude: "");
 
   WeatherEntity weatherEntity =
-      WeatherEntity(weather: "", temp: "", tempMin: "", tempMax: "",date: DateTime.parse(""));
+      WeatherEntity(weather: "", temp: "", tempMin: "", tempMax: "",date: DateTime.parse("0000-00-00 00:00:00"));
 
   test('Deve retornar um WeatherEntity com resultados', () async {
     when(repository.getInstantWeatherFromLocation(validLatLon))
