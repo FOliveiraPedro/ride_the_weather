@@ -29,7 +29,7 @@ class WeatherModel extends WeatherEntity {
 
   factory WeatherModel.fromJson(Map<String, dynamic> map) {
     return WeatherModel(
-      weather: map['weather'][0]['description'] ?? '',
+      weather: map['weather'][0]['main'] ?? '',
       temp: map['main']['temp'] != null? map['main']['temp'].toString(): '',
       tempMin: map['main']['temp_min'] != null? map['main']['temp_min'].toString() : '',
       tempMax: map['main']['temp_max'] != null? map['main']['temp_max'].toString() : '',

@@ -64,7 +64,7 @@ class WeatherDescriptionBloc extends Bloc<String, WeatherDescriptionState>
                 {
                   "weather": [
                     {
-                      "description": success.weather,
+                      "main": success.weather,
                     }
                   ],
                   "main": {
@@ -90,7 +90,7 @@ class WeatherDescriptionBloc extends Bloc<String, WeatherDescriptionState>
               {
                 "weather": [
                   {
-                    "description": item.weather,
+                    "main": item.weather,
                   }
                 ],
                 "main": {

@@ -21,19 +21,68 @@ class _CityListPageState extends ModularState<CityListPage, CityListBloc> {
   }
 
   Widget _buildBody(List<CityEntity> list) {
-    return ListView.builder(
-      itemCount: list.length,
-      itemBuilder: (BuildContext context, index) {
-        return ListTile(
-          onTap: () {
-            WeatherDescriptionPage.navigate(CityEntity(
-                name: list[index].name,
-                country: list[index].country,
-                latLon: list[index].latLon));
-          },
-          title: Text(list[index].name),
-        );
-      },
+    return Container(
+      margin: const EdgeInsets.only(right: 8, left: 8, top: 8),
+      decoration: const BoxDecoration(
+        color: Color(0xff252541),
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
+      height: 246,
+      child: ListView.builder(
+        itemCount: list.length,
+        itemBuilder: (BuildContext context, index) {
+          return Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  WeatherDescriptionPage.navigate(CityEntity(
+                      name: list[index].name,
+                      country: list[index].country,
+                      latLon: list[index].latLon));
+                },
+                child: Container(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        list[index].name + ", " + list[index].country,
+                        style:
+                            const TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xff252541),
+                    borderRadius: list[index] == list.first
+                        ? const BorderRadius.only(
+                            topLeft: Radius.circular(8.0),
+                            topRight: Radius.circular(8.0))
+                        : list[index] == list.last
+                            ? const BorderRadius.only(
+                                bottomLeft: Radius.circular(8.0),
+                                bottomRight: Radius.circular(8.0))
+                            : const BorderRadius.all(Radius.circular(0.0)),
+                  ),
+                  
+                ),
+              ),
+              list[index] != list.last
+                  ? SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.92,
+                      child: Divider(
+                        height: 2,
+                        thickness: 2,
+                        color: Colors.grey.shade700,
+                      ),
+                    )
+                  : Container()
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -52,32 +101,34 @@ class _CityListPageState extends ModularState<CityListPage, CityListBloc> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(),
+      backgroundColor: const Color(0xff161627),
+      appBar: AppBar(
+        title: const Text("Ride the Weather"),
+        centerTitle: true,
+        backgroundColor: const Color(0xff252541),
+      ),
       body: Column(children: [
-        Expanded(
-          child: StreamBuilder<CityListState>(
-              stream: bloc.stream,
-              builder: (context, snapshot) {
-                var state = bloc.state;
-                if (state is ErrorState) {
-                  return _buildError(state.error);
-                }
-                if (state is StartState) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (state is LoadingState) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (state is SuccessState) {
-                  return _buildBody(state.list);
-                } else {
-                  return Container();
-                }
-              }),
-        )
+        StreamBuilder<CityListState>(
+            stream: bloc.stream,
+            builder: (context, snapshot) {
+              var state = bloc.state;
+              if (state is ErrorState) {
+                return _buildError(state.error);
+              }
+              if (state is StartState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is LoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is SuccessState) {
+                return _buildBody(state.list);
+              } else {
+                return Container();
+              }
+            })
       ]),
     );
   }

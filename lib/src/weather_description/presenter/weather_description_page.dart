@@ -31,6 +31,21 @@ class WeatherDescriptionPage extends StatefulWidget {
 
 class _WeatherDescriptionPageState
     extends ModularState<WeatherDescriptionPage, WeatherDescriptionBloc> {
+  List<String> months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -41,40 +56,154 @@ class _WeatherDescriptionPageState
   Widget _buildBody(WeatherDescription weather) {
     return Column(
       children: [
-        Text(
-          weather.instantWeather.temp.toString() + "ºC",
-          style: const TextStyle(fontSize: 18),
+        Container(
+          margin: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
+            color: Color(0xff252541),
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Today",
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    double.parse(weather.instantWeather.temp)
+                            .round()
+                            .toString() +
+                        "ºC",
+                    style: const TextStyle(fontSize: 48, color: Colors.white),
+                  ),
+                  Text(
+                    weather.instantWeather.weather.toString(),
+                    style: const TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          const Text(
+                            "Min",
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                          Text(
+                            double.parse(weather.instantWeather.tempMin)
+                                    .round()
+                                    .toString() +
+                                "ºC",
+                            style: const TextStyle(
+                                fontSize: 18, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          const Text(
+                            "Max",
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                          Text(
+                            double.parse(weather.instantWeather.tempMin)
+                                    .round()
+                                    .toString() +
+                                "ºC",
+                            style: const TextStyle(
+                                fontSize: 18, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-        Text(
-          weather.instantWeather.tempMax.toString() + "ºC",
-          style: const TextStyle(fontSize: 18),
-        ),
-        Text(
-          weather.instantWeather.tempMin.toString() + "ºC",
-          style: const TextStyle(fontSize: 18),
-        ),
-        Text(
-          weather.instantWeather.weather.toString(),
-          style: const TextStyle(fontSize: 18),
-        ),
-        Expanded(
+        Container(
+          margin: const EdgeInsets.only(right: 8, left: 8, top: 8),
+          decoration: const BoxDecoration(
+            color: Color(0xff252541),
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          ),
+          height: 246,
           child: ListView.builder(
             itemCount: bloc.report.length,
             itemBuilder: (BuildContext context, index) {
               return Column(
                 children: [
-                  Text(
-                    bloc.report[index].date.day.toString(),
-                    style: const TextStyle(fontSize: 18),
+                  Container(
+                    height: 60,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff252541),
+                      borderRadius: bloc.report[index] == bloc.report.first
+                          ? const BorderRadius.only(
+                              topLeft: Radius.circular(8.0),
+                              topRight: Radius.circular(8.0))
+                          : bloc.report[index] == bloc.report.last
+                              ? const BorderRadius.only(
+                                  bottomLeft: Radius.circular(8.0),
+                                  bottomRight: Radius.circular(8.0))
+                              : const BorderRadius.all(Radius.circular(0.0)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: Text(
+                            months[bloc.report[index].date.month - 1] +
+                                ", " +
+                                bloc.report[index].date.day.toString(),
+                            style: const TextStyle(
+                                fontSize: 18, color: Colors.white),
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                double.parse(bloc.report[index].tempMin)
+                                        .round()
+                                        .toString() +
+                                    "ºC",
+                                style: const TextStyle(
+                                    fontSize: 18, color: Colors.white),
+                              ),
+                              Text(
+                                double.parse(bloc.report[index].tempMax)
+                                        .round()
+                                        .toString() +
+                                    "ºC",
+                                style: const TextStyle(
+                                    fontSize: 18, color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Text(
-                    bloc.report[index].tempMax.toString() + "ºC",
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  Text(
-                    bloc.report[index].tempMin.toString() + "ºC",
-                    style: const TextStyle(fontSize: 18),
-                  ),
+                  bloc.report[index] != bloc.report.last
+                      ? SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.92,
+                          child: Divider(
+                            height: 2,
+                            thickness: 2,
+                            color: Colors.grey.shade700,
+                          ),
+                        )
+                      : Container()
                 ],
               );
             },
@@ -99,9 +228,12 @@ class _WeatherDescriptionPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xff161627),
       appBar: AppBar(
         title: Text(
             widget.citySelected!.name + ", " + widget.citySelected!.country),
+        centerTitle: true,
+        backgroundColor: const Color(0xff252541),
       ),
       body: Column(children: [
         Expanded(
