@@ -19,7 +19,7 @@ main() {
   LatLon invalidLatLon = LatLon(latitude: "", longitude: "");
   WeatherModel weatherModel =
       WeatherModel(weather: "", temp: "", tempMin: "", tempMax: "", date:  DateTime.parse(""));
-  test('deve retornar uma lista de ResultModel', () async {
+  test('deve retornar um WeatherEntity', () async {
     when(datasource.getInstantWeather(validLatLon))
         .thenAnswer((_) async => weatherModel);
     var result = await repository.getInstantWeatherFromLocation(validLatLon);
